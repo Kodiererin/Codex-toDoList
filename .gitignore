@@ -1,0 +1,13 @@
+node_modules/
+README.md/
+package.json
+package-lock.json
+# Node files
+node_modules/
+npm-debug.log
+
+# MongoDB files
+*.mongodb
+
+# Express files
+public/uploads/
