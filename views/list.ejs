@@ -2,6 +2,7 @@
 <div class="box" id="heading"><h1><%=agenda%></h1></div>
 <% listItem.forEach(function(items){ %>
 <div class="box">
+  <!-- This is for deleting the Data -->
   <form action="/delete" method="post">
     <input
       type="checkbox"
@@ -12,6 +13,7 @@
       id=""
     /><%=items.name%> <% }); %>
   </form>
+  <!-- This is for Inserting the Data. -->
   <form action="/" method="post" class="item">
     <input
       type="text"
