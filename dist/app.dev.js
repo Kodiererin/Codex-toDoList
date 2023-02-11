@@ -57,11 +57,14 @@ var item3 = new Item({
 });
 var defaultItems = [item1, item2, item3];
 var listSchema = {
-  name: String,
+  name: {
+    type: String,
+    uppercase: true
+  },
   items: [itemsSchema]
 };
 var List = new mongoose.model("List", listSchema);
-var itemsModel = mongoose.model('itemsModel', itemsSchema); // Ise Mt Dekhna Ye By Default List h------------------------>
+var itemsModel = new mongoose.model('itemsModel', itemsSchema); // Ise Mt Dekhna Ye By Default List h------------------------>
 
 app.get('/', function _callee(req, res) {
   var listItem, agenda;
@@ -93,11 +96,10 @@ app.get('/', function _callee(req, res) {
               listItem: listItem
             });
           } // console.log(err)
+          // console.log('Error Found '+err);
 
 
-          console.log('Error Found ' + err);
-
-        case 8:
+        case 7:
         case "end":
           return _context2.stop();
       }
@@ -153,7 +155,7 @@ app.get('/:customId', function _callee2(req, res) {
   });
 });
 app.post('/', function _callee3(req, res) {
-  var itemName, listValue, item;
+  var itemName, listValue, item, myTask, p, listItem, agenda;
   return regeneratorRuntime.async(function _callee3$(_context4) {
     while (1) {
       switch (_context4.prev = _context4.next) {
@@ -165,24 +167,66 @@ app.post('/', function _callee3(req, res) {
           console.log(listValue);
           item = new Item({
             name: itemName
+          }); // const itemsModel = new itemsModel({
+          //     name : itemName,
+          // })
+
+          if (!(listValue === 'Today')) {
+            _context4.next = 18;
+            break;
+          }
+
+          // itemsModel.save();
+          // res.redirect('/');
+          console.log(req.body);
+          myTask = req.body.newItem + "";
+          p = new itemsModel({
+            name: req.body.newItem
           });
 
-          if (listValue === 'Today') {
-            item.save();
-            res.redirect('/');
-          } else {
-            console.log("The Data is Getting Entered Here");
-            List.findOne({
-              name: listValue
-            }, function (err, foundList) {
-              foundList.items.push(item);
-              console.log(foundList);
-              foundList.save();
-              res.redirect('/' + listValue);
+          if (myTask.length > 0) {
+            p.save(function (err) {
+              if (err) {
+                console.log(err);
+              }
             });
           }
 
-        case 7:
+          _context4.next = 13;
+          return regeneratorRuntime.awrap(itemsModel.find());
+
+        case 13:
+          listItem = _context4.sent;
+          // Async and await is important.
+          agenda = "Today";
+
+          if (listItem.length == 0) {
+            res.render('list', {
+              agenda: agenda,
+              listItem: ["Please Add An Item"]
+            });
+          } else {
+            res.render('list', {
+              agenda: agenda,
+              listItem: listItem
+            });
+          }
+
+          _context4.next = 20;
+          break;
+
+        case 18:
+          console.log("The Data is Getting Entered Here");
+          List.findOne({
+            name: listValue
+          }, function (err, foundList) {
+            foundList.items.push(item);
+            console.log(foundList);
+            foundList.save();
+            res.redirect('/' + listValue);
+          });
+
+        case 20:
         case "end":
           return _context4.stop();
       }
@@ -190,21 +234,31 @@ app.post('/', function _callee3(req, res) {
   });
 });
 app.post('/delete', function _callee4(req, res) {
-  var data, listItem, agenda;
+  var checkedItemId, listName, data, listItem, agenda;
   return regeneratorRuntime.async(function _callee4$(_context5) {
     while (1) {
       switch (_context5.prev = _context5.next) {
         case 0:
+          checkedItemId = req.body.check;
+          console.log(checkedItemId);
+          listName = req.body.listName;
+          console.log(listName);
+
+          if (!(listName == 'Today')) {
+            _context5.next = 21;
+            break;
+          }
+
           console.log('Deleting the Task');
           data = req.body.check;
           itemsModel.findByIdAndDelete(data, function (req, res) {
             console.log("Deleted");
           });
-          _context5.prev = 3;
-          _context5.next = 6;
+          _context5.prev = 8;
+          _context5.next = 11;
           return regeneratorRuntime.awrap(itemsModel.find());
 
-        case 6:
+        case 11:
           listItem = _context5.sent;
           // Async and await is important.
           agenda = "Today";
@@ -224,21 +278,40 @@ app.post('/delete', function _callee4(req, res) {
             });
           }
 
-          _context5.next = 14;
+          _context5.next = 19;
           break;
 
-        case 11:
-          _context5.prev = 11;
-          _context5.t0 = _context5["catch"](3);
+        case 16:
+          _context5.prev = 16;
+          _context5.t0 = _context5["catch"](8);
           // console.log(err)
           console.log('Error Found ' + _context5.t0);
 
-        case 14:
+        case 19:
+          _context5.next = 22;
+          break;
+
+        case 21:
+          List.findOneAndUpdate({
+            name: listName
+          }, {
+            $pull: {
+              items: {
+                _id: checkedItemId
+              }
+            }
+          }, function (err, foundList) {
+            if (!err) {
+              res.redirect('/' + listName);
+            }
+          });
+
+        case 22:
         case "end":
           return _context5.stop();
       }
     }
-  }, null, null, [[3, 11]]);
+  }, null, null, [[8, 16]]);
 });
 app.listen(3000, function () {
   console.log("Server Has Started On Port 3000");
