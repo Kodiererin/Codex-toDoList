@@ -26,7 +26,7 @@ function main() {
       switch (_context.prev = _context.next) {
         case 0:
           _context.next = 2;
-          return regeneratorRuntime.awrap(mongoose.connect('mongodb://127.0.0.1:27017/toDoList', {
+          return regeneratorRuntime.awrap(mongoose.connect('mongodb+srv://Admin-User:AdminUjjwal365@atlascluster.djkadxo.mongodb.net/toDoList', {
             useNewUrlParser: true
           }));
 
