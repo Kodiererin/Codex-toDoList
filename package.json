@@ -15,5 +15,14 @@
     "loadash": "^1.0.0",
     "mongoose": "^6.8.4"
   },
-  "keywords": []
+  "keywords": [],
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kodiererin/toDoList.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Kodiererin/toDoList/issues"
+  },
+  "homepage": "https://github.com/Kodiererin/toDoList#readme"
 }

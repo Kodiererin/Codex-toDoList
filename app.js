@@ -14,8 +14,9 @@ const mongoose = require('mongoose');
 main().catch(err => console.log(err));
 
 async function main() {
-  await mongoose.connect('mongodb+srv://Admin-User:<YOURPASSWORDHERE>@atlascluster.djkadxo.mongodb.net/toDoList',{useNewUrlParser : true});  
-  // use `await mongoose.connect('mongodb://user:password@127.0.0.1:27017/test');` if your database has auth enabled
+  await mongoose.connect('mongodb://127.0.0.1:27017/toDoDB',{useNewUrlParser : true});  
+//   use `await mongoose.connect('mongodb://user:password@127.0.0.1:27017/toDoDB');  if your database has auth enabled
+// Correcting Database Bugs
 }
 mongoose.set('strictQuery', false);
 

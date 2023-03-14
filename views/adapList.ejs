@@ -7,7 +7,7 @@
             <input type="checkbox" onchange="this.form.submit()" name="check" value='<%=items._id %>'   class="myCheckBox" id=""><%= items.name%>
             <% }); %>
         </form>
-        <form action="/%=agenda%>" method="post" class="item">           
+        <form action="/<%=agenda%>" method="post" class="item">           
            <input type="text" name="newItem" id="" placeholder="New Item" autocomplete="off">
            <Button type="submit" name="list" value=<%=  %>> + </Button>
         </form>
