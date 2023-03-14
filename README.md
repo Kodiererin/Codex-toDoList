@@ -8,7 +8,7 @@ This is a toDoList. This has been created by using Database,Javascript and its v
 To deploy this project run
 
 ```bash
-  npm install -y
+  npm install 
 ```
 
 
